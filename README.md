@@ -1,0 +1,240 @@
+# Stardoc
+
+> Ephemeral Starlight documentation sites from any folder of markdown files.
+
+Stardoc is a CLI tool that transforms any directory of markdown files into a beautiful, searchable documentation site powered by [Astro Starlight](https://starlight.astro.build/). Think "man pages++" - instant documentation without the hassle.
+
+## Features
+
+- **Zero Configuration**: Just point to a folder and go
+- **Automatic Setup**: Creates temporary workspace, installs dependencies, starts server
+- **Smart Processing**: Auto-generates frontmatter from filenames
+- **Clean UX**: Beautiful terminal output with real-time progress
+- **Auto Cleanup**: Removes all temporary files on exit
+- **Package Manager Detection**: Automatically uses pnpm, bun, or npm
+
+## Quick Start
+
+```bash
+# View documentation from a folder
+stardoc ./my-docs
+
+# With custom title
+stardoc ./api-docs --title "API Reference"
+
+# Custom port
+stardoc ./guides --port 8080
+
+# Don't open browser automatically
+stardoc ./docs --no-open
+```
+
+## Installation
+
+```bash
+go install github.com/nicovandenhove/stardoc@latest
+```
+
+Or download a binary from the [releases page](https://github.com/nicovandenhove/stardoc/releases).
+
+## How It Works
+
+1. **Scan**: Discovers all markdown files in your source directory
+2. **Process**: Adds/fixes frontmatter for Starlight compatibility
+3. **Setup**: Creates temporary workspace with embedded Starlight template
+4. **Install**: Installs dependencies using your preferred package manager
+5. **Serve**: Starts Astro dev server and opens in your browser
+6. **Clean**: Removes everything on exit (Ctrl+C)
+
+## Project Structure
+
+The directory structure is organized by BDD phases:
+
+```
+stardoc/
+├── features/                    # Gherkin feature files (BDD specs)
+│   ├── phase1-foundation/      # CLI, workspace, signals, cleanup
+│   ├── phase2-markdown/        # Scanning, frontmatter, copying
+│   ├── phase3-starlight/       # Template, config, dependencies
+│   └── phase4-server/          # Dev server, browser, terminal UX
+├── cmd/
+│   └── stardoc/
+│       └── main.go             # CLI entry point
+├── internal/
+│   ├── cli/                    # Command-line parsing
+│   ├── server/                 # Dev server management
+│   ├── markdown/               # File processing
+│   ├── template/               # Embedded template
+│   └── pkgmgr/                 # Package manager detection
+├── templates/
+│   └── starlight/              # Embedded Starlight template
+├── go.mod
+├── Makefile
+└── README.md
+```
+
+## Development Approach
+
+This project follows **Behavior-Driven Development (BDD)** principles:
+
+1. **Features First**: All functionality is defined in Gherkin `.feature` files
+2. **Validation**: Feature files are reviewed before implementation
+3. **Test-Driven**: Implementation is guided by feature scenarios
+4. **Incremental**: Built phase by phase (Foundation → Markdown → Starlight → Server)
+
+### Development Phases
+
+| Phase | Focus | Features |
+|-------|-------|----------|
+| **Phase 1** | Foundation | CLI parsing, temp workspace, signal handling, cleanup |
+| **Phase 2** | Markdown | Folder scanning, frontmatter injection, file copying |
+| **Phase 3** | Starlight | Template extraction, config generation, dependencies |
+| **Phase 4** | Server & UX | Dev server, browser open, terminal output |
+| **Phase 5** | Advanced | AI generation, source watching, cache optimization |
+
+## Building
+
+```bash
+# Install dependencies
+go mod download
+
+# Run tests
+make test
+
+# Build binary
+make build
+
+# Install locally
+make install
+```
+
+## Usage Examples
+
+### Basic Usage
+
+```bash
+# View markdown docs from current directory
+stardoc .
+
+# View docs from specific folder
+stardoc ./documentation
+
+# View nested structure
+stardoc ~/projects/api-docs
+```
+
+### With Flags
+
+```bash
+# Custom title
+stardoc ./docs --title "My Project Documentation"
+
+# Custom port
+stardoc ./docs --port 3000
+
+# Quiet mode (minimal output)
+stardoc ./docs --quiet
+
+# Verbose mode (debug info)
+stardoc ./docs --verbose
+
+# Don't auto-open browser
+stardoc ./docs --no-open
+
+# Force specific package manager
+stardoc ./docs --package-manager pnpm
+```
+
+## CLI Reference
+
+```
+Usage: stardoc <directory> [flags]
+
+Flags:
+  --title string             Custom site title (default: directory name)
+  --port int                 Dev server port (default: 4321)
+  --no-open                  Don't open browser automatically
+  --quiet                    Minimal output
+  --verbose                  Verbose output with debug info
+  --package-manager string   Force package manager (pnpm, bun, npm)
+  --silent                   Suppress package manager output
+  --timestamps               Include timestamps in log output
+  --help                     Show help
+  --version                  Show version
+```
+
+## Requirements
+
+- Go 1.21+ (for building)
+- Node.js 18+ (for running Astro)
+- One of: pnpm, bun, or npm
+
+## Architecture Decisions
+
+### Why Go?
+- Single binary distribution
+- Excellent process management
+- `go:embed` for template bundling
+- Fast startup time
+
+### Why Starlight?
+- Best-in-class documentation UX
+- Auto-generates navigation from file structure
+- Built-in search
+- Mobile-friendly
+- Minimal configuration required
+
+### Why Temporary Workspace?
+- No permanent files to manage
+- Clean slate every run
+- No git pollution
+- Parallel instances don't conflict
+
+## Feature Status
+
+**Current Phase**: Feature validation and review
+
+**Completed**:
+- ✅ Project structure created
+- ✅ Phase 1 features written (Foundation)
+- ✅ Phase 2 features written (Markdown Processing)
+- ✅ Phase 3 features written (Starlight Integration)
+- ✅ Phase 4 features written (Server & UX)
+
+**Next Steps**:
+1. Review and validate all feature files
+2. Set up BDD test framework (godog)
+3. Implement Phase 1 (Foundation)
+4. Implement Phase 2 (Markdown)
+5. Implement Phase 3 (Starlight)
+6. Implement Phase 4 (Server)
+
+## Contributing
+
+This project is in early development. Feature files define the expected behavior - implementation PRs should align with these specifications.
+
+### Development Workflow
+
+1. Review feature files in `features/` directory
+2. Write tests using godog that match the scenarios
+3. Implement code to make tests pass
+4. Ensure all scenarios in the phase pass before moving to next phase
+
+## License
+
+MIT
+
+## Inspiration
+
+Inspired by tools like:
+- `man` pages (instant reference)
+- `python -m http.server` (zero-config serving)
+- Starlight (beautiful documentation)
+
+Combines the best of all worlds: instant setup, beautiful output, automatic cleanup.
+
+---
+
+**Status**: 🚧 In Development - Feature validation phase
+
+**Version**: 0.1.0-alpha
