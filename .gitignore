@@ -21,6 +21,14 @@ go.work.sum
 *.swo
 *~
 
+# Claude Code (ignore local settings, keep skills)
+.claude/settings.local.json
+.claude/*.json
+!.claude/skills/
+
+# MCP server state
+.playwright-mcp/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -32,3 +40,25 @@ temp/
 
 # Build artifacts
 stardoc
+
+# Test build artifacts (from BDD tests)
+tests/export/
+features/*/_astro/
+features/*/pagefind/
+features/docs-output/
+features/output/
+features/nested/
+features/validated-output/
+
+# Documentation directory - ignore build output but keep markdown
+docs/_astro/
+docs/api/
+docs/getting-started/
+docs/guides/
+docs/modified/
+docs/index.html
+docs/*.html
+
+# Node.js (except embedded template)
+node_modules/
+!internal/template/starlight/node_modules/
