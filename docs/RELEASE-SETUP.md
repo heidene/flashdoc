@@ -26,7 +26,9 @@ All binary distribution infrastructure has been implemented:
 4. **License** ✅
    - `LICENSE` - Beerware license
 
-## 📋 Manual Steps Required
+## 📋 Manual Steps (Optional - Homebrew Only)
+
+**Note:** These steps are only needed if you want to support Homebrew installation. The install script and `go install` work without these.
 
 ### 1. Create Homebrew tap repository
 
@@ -98,14 +100,14 @@ GitHub Actions will automatically:
 After the first release (v0.2.0):
 
 ```bash
-# Option 1: go install
-go install github.com/nicovandenhove/flashdoc/cmd/flashdoc@latest
+# Option 1: Quick install (Recommended)
+curl -sSL https://raw.githubusercontent.com/heidene/flashdoc/main/install.sh | sh
 
-# Option 2: Homebrew
-brew install nicovandenhove/tap/flashdoc
+# Option 2: go install
+go install github.com/heidene/flashdoc/cmd/flashdoc@latest
 
 # Option 3: Download binary
-# Visit: https://github.com/nicovandenhove/flashdoc/releases
+# Visit: https://github.com/heidene/flashdoc/releases
 # Download for your platform and add to PATH
 ```
 

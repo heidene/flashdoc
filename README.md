@@ -1,5 +1,11 @@
 # flashdoc
 
+[![Development Status](https://img.shields.io/badge/status-alpha-orange?style=flat-square)](https://github.com/heidene/flashdoc/releases)
+[![License](https://img.shields.io/badge/license-Beerware-yellow?style=flat-square)](LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/heidene/flashdoc?style=flat-square)](https://github.com/heidene/flashdoc/releases/latest)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/heidene/flashdoc?style=flat-square)](go.mod)
+[![CI](https://img.shields.io/github/actions/workflow/status/heidene/flashdoc/ci.yml?branch=main&style=flat-square&label=tests)](https://github.com/heidene/flashdoc/actions)
+
 > Ephemeral Starlight documentation sites from any folder of markdown files.
 
 flashdoc is a CLI tool that transforms any directory of markdown files into a beautiful, searchable documentation site powered by [Astro Starlight](https://starlight.astro.build/). Think "man pages++" - instant documentation without the hassle.
@@ -31,11 +37,23 @@ flashdoc ./docs --no-open
 
 ## Installation
 
+### Quick Install (Recommended)
+
 ```bash
-go install github.com/heidene/flashdoc@latest
+curl -sSL https://raw.githubusercontent.com/heidene/flashdoc/main/install.sh | sh
 ```
 
-Or download a binary from the [releases page](https://github.com/heidene/flashdoc/releases).
+This will automatically download the latest release for your OS and architecture.
+
+### Alternative Methods
+
+**Using Go:**
+```bash
+go install github.com/heidene/flashdoc/cmd/flashdoc@latest
+```
+
+**Manual Download:**
+Download a binary from the [releases page](https://github.com/heidene/flashdoc/releases).
 
 ## How It Works
 
@@ -222,7 +240,9 @@ This project is in early development. Feature files define the expected behavior
 
 ## License
 
-MIT
+[Beerware License](LICENSE) 🍺
+
+Free to use, modify, and distribute. If we meet someday and you think this tool is worth it, you can buy me a beer!
 
 ## Inspiration
 

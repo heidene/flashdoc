@@ -91,35 +91,35 @@ changelog:
     - title: Others
       order: 999
 
-# Homebrew formula configuration
-brews:
-  - name: flashdoc
-    repository:
-      owner: nicovandenhove
-      name: homebrew-tap
-      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-
-    # Commit message for the formula update
-    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
-
-    # Formula metadata
-    folder: Formula
-    homepage: "https://github.com/nicovandenhove/flashdoc"
-    description: "Generate and serve Starlight documentation sites from markdown files"
-    license: "Beerware"
-
-    # Dependencies
-    dependencies:
-      - name: node
-        type: optional
-
-    # Installation instructions
-    install: |
-      bin.install "flashdoc"
-
-    # Test
-    test: |
-      system "#{bin}/flashdoc", "--version"
+# Homebrew formula configuration (disabled until tap repo is created)
+# brews:
+#   - name: flashdoc
+#     repository:
+#       owner: heidene
+#       name: homebrew-tap
+#       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+#
+#     # Commit message for the formula update
+#     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+#
+#     # Formula metadata
+#     folder: Formula
+#     homepage: "https://github.com/heidene/flashdoc"
+#     description: "Generate and serve Starlight documentation sites from markdown files"
+#     license: "Beerware"
+#
+#     # Dependencies
+#     dependencies:
+#       - name: node
+#         type: optional
+#
+#     # Installation instructions
+#     install: |
+#       bin.install "flashdoc"
+#
+#     # Test
+#     test: |
+#       system "#{bin}/flashdoc", "--version"
 
 release:
   github:
