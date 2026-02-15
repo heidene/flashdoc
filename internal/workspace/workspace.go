@@ -64,9 +64,11 @@ func (w *Workspace) createSymlinks() error {
 	for linkName, target := range symlinks {
 		linkPath := filepath.Join(w.Path, linkName)
 
-		// Check if target exists
+		// Check if target exists - if not, skip this symlink
+		// This allows Setup() to work even when shared files don't exist yet
 		if _, err := os.Stat(target); os.IsNotExist(err) {
-			return fmt.Errorf("symlink target does not exist: %s", target)
+			// Skip this symlink - target doesn't exist yet
+			continue
 		}
 
 		// Remove existing link if present

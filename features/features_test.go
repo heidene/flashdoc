@@ -38,6 +38,7 @@ func InitializeScenario(sc *godog.ScenarioContext) {
 	steps.RegisterOutputSteps(sc, testCtx)
 	steps.RegisterBrowserSteps(sc, testCtx)
 	steps.RegisterServerSteps(sc, testCtx)
+	steps.RegisterExportSteps(sc, testCtx)
 }
 
 // runPhase is a helper function to run tests for a specific phase

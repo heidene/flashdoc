@@ -7,6 +7,7 @@ type Config struct {
 	Port           int
 	NoOpen         bool
 	ForceReinstall bool
+	ExportPath     string // Path to export static build, empty means no export
 }
 
 // Version is the current version of stardoc

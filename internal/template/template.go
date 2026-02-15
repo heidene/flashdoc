@@ -51,6 +51,11 @@ func Extract(workspacePath string) error {
 		}
 	}
 
+	// Extract src/ files (content.config.ts, etc.)
+	if err := ExtractConfigOnly(workspacePath); err != nil {
+		return err
+	}
+
 	return nil
 }
 

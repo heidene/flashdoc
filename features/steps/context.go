@@ -71,6 +71,14 @@ type TestContext struct {
 	// Additional state flags
 	npmInstalling bool
 	slowCleanup   bool
+
+	// Export functionality
+	exportPath       string
+	buildTriggered   bool
+	buildShouldFail  bool
+	exportShouldFail bool
+	forbiddenPath    string
+	expectedTitle    string
 }
 
 // NewTestContext creates a new test context

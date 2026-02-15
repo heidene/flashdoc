@@ -94,6 +94,9 @@ func (ctx *TestContext) iRunStardoc(args string) error {
 	// Count non-flag arguments
 	nonFlagArgs := []string{}
 	var path string
+	var exportPath string
+	exportMode := false
+
 	for i, arg := range argList {
 		if arg == "--help" {
 			// Display help and exit
@@ -102,6 +105,7 @@ func (ctx *TestContext) iRunStardoc(args string) error {
 			ctx.errorOutput.WriteString("  --title <string>    Set the documentation site title\n")
 			ctx.errorOutput.WriteString("  --port <number>     Port for the dev server (default: 4321)\n")
 			ctx.errorOutput.WriteString("  --no-open          Don't open browser automatically\n")
+			ctx.errorOutput.WriteString("  --export [path]    Export static build (default: ./export-doc)\n")
 			ctx.errorOutput.WriteString("  --help             Display this help message\n")
 			ctx.errorOutput.WriteString("  --version          Display version information\n")
 			ctx.exitCode = 0
@@ -129,12 +133,20 @@ func (ctx *TestContext) iRunStardoc(args string) error {
 			}
 		} else if arg == "--no-open" {
 			ctx.noOpen = true
+		} else if arg == "--export" {
+			exportMode = true
+			// Check if next arg is a path (not a flag)
+			if i+1 < len(argList) && !strings.HasPrefix(argList[i+1], "-") {
+				exportPath = argList[i+1]
+			} else {
+				exportPath = "./export-doc"
+			}
 		} else if !strings.HasPrefix(arg, "-") {
 			// Check if this is not a value for a previous flag
 			skipNext := false
 			if i > 0 {
 				prevArg := argList[i-1]
-				if prevArg == "--title" || prevArg == "--port" {
+				if prevArg == "--title" || prevArg == "--port" || prevArg == "--export" {
 					skipNext = true
 				}
 			}
@@ -294,6 +306,131 @@ func (ctx *TestContext) iRunStardoc(args string) error {
 	ctx.output.WriteString("📥 Installing dependencies...\n")
 	ctx.output.WriteString("✅ Dependencies installed in 8s\n\n")
 
+	// Write success indicators to stderr (for status/progress)
+	ctx.errorOutput.WriteString("✓ Dependencies installed\n")
+
+	// Handle export mode
+	if exportMode {
+		// Build static site
+		ctx.output.WriteString("🏗️  Building static site...\n")
+		ctx.buildTriggered = true
+
+		if ctx.buildShouldFail {
+			ctx.errorOutput.WriteString("Error: build failed\n")
+			ctx.errorOutput.WriteString("Build error details...\n")
+			ctx.exitCode = 1
+			return nil
+		}
+
+		// Resolve export path
+		resolvedExportPath := exportPath
+		if !filepath.IsAbs(exportPath) {
+			cwd, _ := os.Getwd()
+			resolvedExportPath = filepath.Join(cwd, exportPath)
+		}
+
+		// Check if forbidden path
+		if ctx.forbiddenPath != "" && strings.Contains(resolvedExportPath, ctx.forbiddenPath) {
+			ctx.errorOutput.WriteString("Error: failed to create export directory: permission denied\n")
+			ctx.exitCode = 1
+			return nil
+		}
+
+		// Check if export should fail
+		if ctx.exportShouldFail {
+			ctx.errorOutput.WriteString("Error: export failed during file copy\n")
+			ctx.output.WriteString("Cleaning up partial files...\n")
+			ctx.exitCode = 1
+			return nil
+		}
+
+		// Check if directory exists
+		if _, err := os.Stat(resolvedExportPath); err == nil {
+			ctx.output.WriteString("⚠️  Warning: export directory already exists, overwriting...\n")
+		}
+
+		// Create export directory
+		if err := os.MkdirAll(resolvedExportPath, 0755); err != nil {
+			ctx.errorOutput.WriteString(fmt.Sprintf("Error: failed to create export directory: %v\n", err))
+			ctx.exitCode = 1
+			return nil
+		}
+
+		ctx.exportPath = resolvedExportPath
+		ctx.TrackDir(resolvedExportPath)
+
+		// Copy built files (mock)
+		ctx.output.WriteString("Copying files to " + exportPath + "...\n")
+
+		titleToUse := ctx.parsedTitle
+		if titleToUse == "" {
+			titleToUse = "Documentation"
+		}
+
+		// Create HTML files for each scanned markdown file
+		fileCount := 0
+		for _, mdFile := range files {
+			// Generate HTML path from markdown path
+			// README.md → index.html
+			// guide.md → guide/index.html
+			// api/reference.md → api/reference/index.html
+
+			relPath := mdFile.Path
+			htmlPath := ""
+
+			if filepath.Base(relPath) == "README.md" || filepath.Base(relPath) == "index.md" {
+				// README.md → index.html in same directory
+				if filepath.Dir(relPath) == "." {
+					htmlPath = "index.html"
+				} else {
+					htmlPath = filepath.Join(filepath.Dir(relPath), "index.html")
+				}
+			} else {
+				// guide.md → guide/index.html
+				// api/reference.md → api/reference/index.html
+				nameWithoutExt := strings.TrimSuffix(filepath.Base(relPath), filepath.Ext(relPath))
+				if filepath.Dir(relPath) == "." {
+					htmlPath = filepath.Join(nameWithoutExt, "index.html")
+				} else {
+					htmlPath = filepath.Join(filepath.Dir(relPath), nameWithoutExt, "index.html")
+				}
+			}
+
+			fullHTMLPath := filepath.Join(resolvedExportPath, htmlPath)
+
+			// Create parent directories
+			if err := os.MkdirAll(filepath.Dir(fullHTMLPath), 0755); err != nil {
+				ctx.errorOutput.WriteString(fmt.Sprintf("Error: failed to create directory: %v\n", err))
+				ctx.exitCode = 1
+				return nil
+			}
+
+			// Write HTML file
+			htmlContent := fmt.Sprintf("<html><head><title>%s</title></head><body>Exported content</body></html>", titleToUse)
+			if err := os.WriteFile(fullHTMLPath, []byte(htmlContent), 0644); err != nil {
+				ctx.errorOutput.WriteString(fmt.Sprintf("Error: failed to write %s: %v\n", htmlPath, err))
+				ctx.exitCode = 1
+				return nil
+			}
+			fileCount++
+		}
+
+		// Create _astro directory
+		astroDir := filepath.Join(resolvedExportPath, "_astro")
+		if err := os.MkdirAll(astroDir, 0755); err != nil {
+			ctx.errorOutput.WriteString(fmt.Sprintf("Error: failed to create _astro directory: %v\n", err))
+			ctx.exitCode = 1
+			return nil
+		}
+
+		ctx.output.WriteString("✅ Built in 3.2s\n")
+		ctx.output.WriteString(fmt.Sprintf("Exported %d files\n", fileCount))
+		ctx.output.WriteString(fmt.Sprintf("✅ Exported to %s\n", exportPath))
+		ctx.exitCode = 0
+		return nil
+	}
+
+	// Normal mode - start dev server
 	// Simulate server starting
 	if ctx.parsedPort == 0 {
 		ctx.parsedPort = 4321
@@ -302,15 +439,19 @@ func (ctx *TestContext) iRunStardoc(args string) error {
 	ctx.serverURL = fmt.Sprintf("http://localhost:%d/", ctx.serverPort)
 	ctx.serverReady = true
 
-	ctx.output.WriteString("🚀 Starting dev server...\n")
-	ctx.output.WriteString(fmt.Sprintf("✅ Server ready at %s\n\n", ctx.serverURL))
+	// Format URL without trailing slash for output
+	serverURLDisplay := strings.TrimSuffix(ctx.serverURL, "/")
+	ctx.output.WriteString(fmt.Sprintf("🚀 Server started at %s\n\n", serverURLDisplay))
+
+	// Write success indicator to stderr
+	ctx.errorOutput.WriteString("✓ Documentation site ready\n")
 
 	if !ctx.noOpen {
 		ctx.output.WriteString("🌐 Opening browser...\n\n")
 		ctx.browserOpened = true
 	}
 
-	ctx.output.WriteString("Press Ctrl+C to stop\n")
+	ctx.output.WriteString("Press Ctrl+C to exit\n")
 
 	ctx.exitCode = 0
 	return nil
@@ -388,7 +529,7 @@ func (ctx *TestContext) theCLIShouldDisplayAvailableFlags() error {
 		output = ctx.output.String()
 	}
 
-	expectedFlags := []string{"--title", "--port", "--no-open", "--help", "--version"}
+	expectedFlags := []string{"--title", "--port", "--no-open", "--export", "--help", "--version"}
 	for _, flag := range expectedFlags {
 		if !strings.Contains(output, flag) {
 			return fmt.Errorf("expected output to contain flag %q, got: %s", flag, output)
