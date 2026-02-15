@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/nicovandenhove/stardoc/internal/frontmatter"
-	"github.com/nicovandenhove/stardoc/internal/scanner"
+	"github.com/nicovandenhove/flashdoc/internal/frontmatter"
+	"github.com/nicovandenhove/flashdoc/internal/scanner"
 )
 
 // Processor handles markdown file processing and copying

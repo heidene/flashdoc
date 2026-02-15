@@ -6,16 +6,16 @@ COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Ldflags for version injection
-LDFLAGS := -X 'github.com/nicovandenhove/stardoc/internal/cli.Version=$(VERSION)' \
-           -X 'github.com/nicovandenhove/stardoc/internal/cli.Commit=$(COMMIT)' \
-           -X 'github.com/nicovandenhove/stardoc/internal/cli.Date=$(DATE)'
+LDFLAGS := -X 'github.com/nicovandenhove/flashdoc/internal/cli.Version=$(VERSION)' \
+           -X 'github.com/nicovandenhove/flashdoc/internal/cli.Commit=$(COMMIT)' \
+           -X 'github.com/nicovandenhove/flashdoc/internal/cli.Date=$(DATE)'
 
 # Build flags
 BUILD_FLAGS := -trimpath -ldflags "$(LDFLAGS) -s -w"
 
 # Default target
 help:
-	@echo "Stardoc - Development Commands"
+	@echo "Flashdoc - Development Commands"
 	@echo ""
 	@echo "Usage:"
 	@echo "  make build       Build the binary"
@@ -29,15 +29,15 @@ help:
 
 # Build the binary
 build:
-	@echo "Building stardoc $(VERSION)..."
-	@go build $(BUILD_FLAGS) -o bin/stardoc ./cmd/stardoc
-	@echo "✅ Binary created at bin/stardoc"
+	@echo "Building flashdoc $(VERSION)..."
+	@go build $(BUILD_FLAGS) -o bin/flashdoc ./cmd/flashdoc
+	@echo "✅ Binary created at bin/flashdoc"
 
 # Install to GOPATH/bin
 install:
-	@echo "Installing stardoc $(VERSION)..."
-	@go install $(BUILD_FLAGS) ./cmd/stardoc
-	@echo "✅ Installed to $(shell go env GOPATH)/bin/stardoc"
+	@echo "Installing flashdoc $(VERSION)..."
+	@go install $(BUILD_FLAGS) ./cmd/flashdoc
+	@echo "✅ Installed to $(shell go env GOPATH)/bin/flashdoc"
 
 # Run all tests
 test:
@@ -85,17 +85,17 @@ deps:
 
 # Run the tool locally (for testing)
 run:
-	@go run ./cmd/stardoc $(ARGS)
+	@go run ./cmd/flashdoc $(ARGS)
 
 # Create release builds for multiple platforms
 release:
 	@echo "Building releases..."
 	@mkdir -p dist
-	@GOOS=darwin GOARCH=amd64 go build -o dist/stardoc-darwin-amd64 ./cmd/stardoc
-	@GOOS=darwin GOARCH=arm64 go build -o dist/stardoc-darwin-arm64 ./cmd/stardoc
-	@GOOS=linux GOARCH=amd64 go build -o dist/stardoc-linux-amd64 ./cmd/stardoc
-	@GOOS=linux GOARCH=arm64 go build -o dist/stardoc-linux-arm64 ./cmd/stardoc
-	@GOOS=windows GOARCH=amd64 go build -o dist/stardoc-windows-amd64.exe ./cmd/stardoc
+	@GOOS=darwin GOARCH=amd64 go build -o dist/flashdoc-darwin-amd64 ./cmd/flashdoc
+	@GOOS=darwin GOARCH=arm64 go build -o dist/flashdoc-darwin-arm64 ./cmd/flashdoc
+	@GOOS=linux GOARCH=amd64 go build -o dist/flashdoc-linux-amd64 ./cmd/flashdoc
+	@GOOS=linux GOARCH=arm64 go build -o dist/flashdoc-linux-arm64 ./cmd/flashdoc
+	@GOOS=windows GOARCH=amd64 go build -o dist/flashdoc-windows-amd64.exe ./cmd/flashdoc
 	@echo "✅ Release builds created in dist/"
 
 # Initialize module dependencies

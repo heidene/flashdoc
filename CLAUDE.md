@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Stardoc** is a CLI tool that creates ephemeral Starlight documentation sites from any directory of markdown files. It's built with Go and follows **Behavior-Driven Development (BDD)** principles using Godog/Cucumber.
+**flashdoc** is a CLI tool that creates ephemeral Starlight documentation sites from any directory of markdown files. It's built with Go and follows **Behavior-Driven Development (BDD)** principles using Godog/Cucumber.
 
-**Core concept**: Point stardoc at a markdown folder, and it instantly creates a beautiful searchable documentation site in a temporary workspace, then cleans everything up on exit. Zero configuration, zero permanent files.
+**Core concept**: Point flashdoc at a markdown folder, and it instantly creates a beautiful searchable documentation site in a temporary workspace, then cleans everything up on exit. Zero configuration, zero permanent files.
 
 ## BDD-First Development Philosophy
 
@@ -154,10 +154,10 @@ Use a directory stack to track nesting depth (4 spaces = 1 level) and build corr
 
 ```bash
 # Build binary
-go build -o bin/stardoc cmd/stardoc/main.go
+go build -o bin/flashdoc cmd/flashdoc/main.go
 
 # Run locally with arguments
-./bin/stardoc ./features/test-docs
+./bin/flashdoc ./features/test-docs
 
 # Run all BDD tests (89 passing, 124 undefined)
 go test -v ./features/...
@@ -187,7 +187,7 @@ When fixing failing tests:
 2. Read the feature file to understand expected behavior
 3. Check step implementation in `features/steps/`
 4. Verify/fix production code in `internal/`
-5. Rebuild binary if testing end-to-end: `go build -o bin/stardoc cmd/stardoc/main.go`
+5. Rebuild binary if testing end-to-end: `go build -o bin/flashdoc cmd/flashdoc/main.go`
 6. Re-run test to verify fix
 
 ### Makefile Alternatives
@@ -202,7 +202,7 @@ go test -v ./...
 go test -v ./features/...
 
 # Instead of: make build
-go build -o bin/stardoc cmd/stardoc/main.go
+go build -o bin/flashdoc cmd/flashdoc/main.go
 ```
 
 ## Common Patterns & Gotchas
@@ -277,7 +277,7 @@ After changing template files, rebuild binary to embed changes.
 
 - **Feature files**: `features/phase{1-4}-*/*.feature` (14 files)
 - **Step definitions**: `features/steps/*_steps.go` (16 files)
-- **Main entry point**: `cmd/stardoc/main.go`
+- **Main entry point**: `cmd/flashdoc/main.go`
 - **Internal packages**: `internal/*/` (14 packages)
 - **Embedded template**: `internal/template/starlight/`
 

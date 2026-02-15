@@ -1,63 +1,85 @@
-# Contributing to Stardoc
+# Contributing to flashdoc
 
-Thank you for your interest in contributing to Stardoc! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to flashdoc! This document provides guidelines for contributing to the project.
 
 ## Project Status
 
-**Current Phase**: Feature validation and BDD test setup
-**Implementation Status**: Not yet started - all feature files are complete and ready for implementation
+**Current Phase**: Active development and maintenance
+**Implementation Status**: ✅ Core features complete (89/89 BDD scenarios passing)
+**Next Steps**: Bug fixes, new features, documentation improvements, and community feedback
 
 ## Development Philosophy
 
 This project follows **Behavior-Driven Development (BDD)** principles:
 
-1. **Features Define Behavior**: All functionality is specified in Gherkin `.feature` files
-2. **Tests Before Code**: Write tests that match feature scenarios before implementing
-3. **Phase-by-Phase**: Implement incrementally, completing one phase before moving to the next
-4. **Validation First**: Features are validated and approved before implementation begins
+1. **Features Define Behavior**: All functionality is specified in Gherkin `.feature` files in `features/`
+2. **Tests Drive Development**: BDD tests validate behavior before and after changes
+3. **Phase-Based Organization**: Features are organized into 4 phases (foundation, markdown, starlight, server)
+4. **Quality First**: All changes must pass existing tests and add tests for new features
 
 ## Project Structure
 
 ```
-stardoc/
-├── features/                    # BDD feature files (specifications)
-│   ├── phase1-foundation/      # Core CLI, workspace, cleanup
-│   ├── phase2-markdown/        # File processing and frontmatter
-│   ├── phase3-starlight/       # Template and dependency management
-│   └── phase4-server/          # Dev server and browser integration
-├── cmd/stardoc/                # CLI entry point
-├── internal/                   # Internal packages
-│   ├── cli/                    # Command-line parsing and validation
-│   ├── server/                 # Dev server lifecycle management
-│   ├── markdown/               # Markdown file processing
-│   ├── template/               # Embedded template extraction
-│   └── pkgmgr/                 # Package manager detection
-├── templates/starlight/        # Embedded Starlight template (to be created)
-├── README.md                   # Project overview
-├── FEATURE_VALIDATION.md       # Feature review and validation checklist
-├── Makefile                    # Development commands
-└── go.mod                      # Go module definition
+flashdoc/
+├── features/                    # BDD feature files and test steps
+│   ├── phase1-foundation/       # ✅ CLI, workspace, signals, cleanup
+│   ├── phase2-markdown/         # ✅ File processing, frontmatter
+│   ├── phase3-starlight/        # ✅ Template, config, dependencies
+│   ├── phase4-server/           # ✅ Dev server, browser, export
+│   ├── steps/                   # Step definitions (16 files)
+│   └── test-docs/               # Test fixtures (markdown files)
+├── cmd/flashdoc/                 # CLI entry point
+├── internal/                    # Internal packages
+│   ├── cli/                     # Command-line parsing (Cobra)
+│   ├── workspace/               # Temp workspace management
+│   ├── scanner/                 # Markdown file discovery
+│   ├── frontmatter/             # YAML frontmatter injection
+│   ├── processor/               # File processing orchestration
+│   ├── template/                # Embedded Starlight template
+│   │   └── starlight/           # Astro + Starlight template
+│   ├── config/                  # Starlight config generation
+│   ├── pkgmanager/              # Package manager detection
+│   ├── installer/               # Dependency installation
+│   ├── server/                  # Dev server lifecycle
+│   ├── exporter/                # Static site export
+│   ├── browser/                 # Browser opening
+│   ├── cleanup/                 # Resource cleanup
+│   └── signal/                  # Signal handling
+├── docs/                        # Project documentation
+├── .github/workflows/           # CI/CD pipelines
+│   ├── ci.yml                   # Tests and linting
+│   └── release.yml              # Release automation
+├── .goreleaser.yaml             # Release configuration
+├── LICENSE                      # Beerware license
+├── THIRD-PARTY-LICENSES.md      # Dependency licenses
+├── CLAUDE.md                    # Claude Code instructions
+├── README.md                    # User documentation
+├── CONTRIBUTING.md              # This file
+└── Makefile                     # Development commands
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Go 1.21 or later
-- Node.js 18 or later (for testing Starlight integration)
-- One of: pnpm, bun, or npm
+- **Go 1.22+** (project uses 1.25.5)
+- **Node.js 18+** (for Starlight template)
+- **Package manager**: pnpm, bun, or npm
+- **Git** for version control
 
 ### Initial Setup
 
 ```bash
 # Clone the repository
-cd ~/Code/Tools/stardoc
+git clone https://github.com/nicovandenhove/flashdoc.git
+cd flashdoc
 
 # Download Go dependencies
-make mod
+go mod download
 
-# Install development tools
-make deps
+# Install development tools (optional)
+go install github.com/cucumber/godog/cmd/godog@latest
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 ```
 
 ### Development Commands
@@ -65,303 +87,324 @@ make deps
 ```bash
 # Build the binary
 make build
+# or: go build -o bin/flashdoc cmd/flashdoc/main.go
 
-# Run tests (once implemented)
-make test
+# Run all tests (unit + BDD)
+go test -v ./...
 
-# Run BDD feature tests
-make features
+# Run BDD feature tests only
+go test -v ./features/...
+
+# Run specific phase tests
+go test -v ./features/... -run TestPhase1
+go test -v ./features/... -run TestPhase2
+
+# Run specific scenario
+go test -v ./features/... -run "TestPhase4/Export_to_default_directory"
 
 # Format code
-make fmt
+go fmt ./...
 
-# Run linters
+# Run linters (requires golangci-lint)
 make lint
+# or: golangci-lint run ./...
 
 # Install locally for testing
 make install
+# or: go install ./cmd/flashdoc
 ```
-
-## Implementation Roadmap
-
-### Phase 1: Foundation (Current Target)
-Focus: CLI parsing, temp workspace, signal handling, cleanup
-
-**Features to implement**:
-1. `cli-parsing.feature` - Cobra-based CLI with flags
-2. `temp-workspace.feature` - OS temp directory management
-3. `signal-handling.feature` - Graceful shutdown with signals
-4. `cleanup.feature` - Resource cleanup on exit
-
-**Implementation steps**:
-1. Set up `internal/cli` package with Cobra
-2. Implement workspace creation in dedicated package
-3. Add signal handling with context cancellation
-4. Wire up cleanup with defer and signal handlers
-5. Write godog tests for each feature
-6. Ensure all scenarios pass
-
-### Phase 2: Markdown Processing
-Focus: File discovery, frontmatter injection, copying
-
-### Phase 3: Starlight Integration
-Focus: Template extraction, config generation, dependencies
-
-### Phase 4: Server & UX
-Focus: Dev server management, browser launch, terminal output
 
 ## How to Contribute
 
-### 1. Review Feature Files
+### 1. Understanding the Codebase
 
-Start by reading the feature files in the `features/` directory. These define the expected behavior.
+Start by reading:
+- **README.md**: User-facing documentation and usage examples
+- **CLAUDE.md**: Comprehensive development guide (BDD workflow, architecture, patterns)
+- **Feature files** in `features/phase*/`: Behavior specifications in Gherkin
 
-Each `.feature` file contains:
-- **Feature**: High-level description
-- **Background**: Common setup for scenarios
-- **Scenarios**: Specific test cases with Given/When/Then steps
+### 2. Types of Contributions
 
-Example:
-```gherkin
-Scenario: Valid directory path provided
-  When I run "stardoc ./docs"
-  Then the CLI should parse the path "./docs"
-  And the CLI should validate that the path exists
-  And the CLI should proceed with site generation
-```
+**Bug Fixes:**
+1. Identify the failing behavior
+2. Find or write a BDD scenario that reproduces the bug
+3. Fix the bug in the relevant `internal/` package
+4. Verify all tests pass
 
-### 2. Set Up BDD Tests
+**New Features:**
+1. Write a `.feature` file describing the behavior
+2. Add step definitions in `features/steps/`
+3. Implement the feature in `internal/` packages
+4. Ensure tests pass
 
-We use [godog](https://github.com/cucumber/godog) for BDD testing.
+**Documentation:**
+- Improve README.md, CONTRIBUTING.md, or comments
+- Add examples or tutorials
+- Update CLAUDE.md for development patterns
+
+**Refactoring:**
+- Ensure all existing tests pass before and after
+- Maintain backward compatibility
+- Document architectural changes
+
+### 3. Development Workflow
 
 ```bash
-# Install godog
-go install github.com/cucumber/godog/cmd/godog@latest
+# 1. Create a feature branch
+git checkout -b feature/your-feature-name
 
-# Create test file structure (example for Phase 1)
-mkdir -p features/phase1-foundation
-# Feature files already exist!
+# 2. Make your changes
+# - Edit code in internal/ packages
+# - Add/update tests in features/
+# - Update documentation
 
-# Create step definitions
-mkdir -p test/steps
-touch test/steps/cli_steps.go
+# 3. Run tests frequently
+go test -v ./features/...
+
+# 4. Format and lint
+go fmt ./...
+golangci-lint run ./...
+
+# 5. Commit with conventional commits format
+git add .
+git commit -m "feat: add support for custom CSS"
+
+# 6. Push and create PR
+git push origin feature/your-feature-name
 ```
 
-### 3. Write Step Definitions
+### 4. BDD Testing Pattern
 
-Step definitions map Gherkin steps to Go code:
+flashdoc uses **godog** for BDD testing. Here's how to add tests:
 
 ```go
-// test/steps/cli_steps.go
+// features/steps/my_feature_steps.go
 package steps
 
-import (
-    "github.com/cucumber/godog"
-)
+import "github.com/cucumber/godog"
 
-func InitializeScenario(ctx *godog.ScenarioContext) {
-    ctx.Step(`^I run "([^"]*)"$`, iRun)
-    ctx.Step(`^the CLI should parse the path "([^"]*)"$`, cliShouldParsePath)
-    // ... more step definitions
-}
-
-func iRun(command string) error {
+func (ctx *TestContext) iDoSomething() error {
     // Implementation
     return nil
 }
 
-func cliShouldParsePath(path string) error {
+func (ctx *TestContext) iShouldSeeResult(expected string) error {
     // Assertion
-    return nil
-}
-```
-
-### 4. Implement Features
-
-With tests in place, implement the actual functionality:
-
-```go
-// internal/cli/parser.go
-package cli
-
-import "github.com/spf13/cobra"
-
-func NewRootCommand() *cobra.Command {
-    cmd := &cobra.Command{
-        Use:   "stardoc <directory>",
-        Short: "Ephemeral Starlight documentation sites",
-        Args:  cobra.ExactArgs(1),
-        RunE:  run,
+    if ctx.output != expected {
+        return fmt.Errorf("expected %q, got %q", expected, ctx.output)
     }
-
-    // Add flags
-    cmd.Flags().String("title", "", "Custom site title")
-    cmd.Flags().Int("port", 4321, "Dev server port")
-    cmd.Flags().Bool("no-open", false, "Don't open browser")
-
-    return cmd
-}
-
-func run(cmd *cobra.Command, args []string) error {
-    // Implementation
     return nil
 }
+
+// Register steps in features_test.go InitializeScenario
 ```
 
-### 5. Run Tests
+See existing step files in `features/steps/` for patterns.
 
-```bash
-# Run all feature tests
-make features
+### 5. Code Style
 
-# Run specific feature
-godog features/phase1-foundation/cli-parsing.feature
-
-# Run with tags
-godog --tags=@phase1 features/
-```
-
-### 6. Iterate
-
-- Write test → Implement → Verify → Refine
-- Ensure all scenarios pass before moving on
-- Keep commits focused on single features
-
-## Code Style
-
-### Go Conventions
-
+**Go Conventions:**
 - Follow standard Go formatting (`gofmt`)
-- Use meaningful variable names
-- Document exported functions and types
+- Use meaningful names (avoid abbreviations)
 - Keep functions small and focused
+- Document exported types and functions
 - Prefer composition over inheritance
 
-### Error Handling
-
+**Error Handling:**
 ```go
 // Wrap errors with context
 if err != nil {
     return fmt.Errorf("failed to create workspace: %w", err)
 }
 
-// Use custom error types for specific cases
-type ValidationError struct {
-    Field   string
-    Message string
-}
-
-func (e *ValidationError) Error() string {
-    return fmt.Sprintf("validation error on %s: %s", e.Field, e.Message)
+// Return early on errors
+if err := validate(input); err != nil {
+    return err
 }
 ```
 
-### Package Organization
+**Package Organization:**
+- Each package has a single, clear responsibility
+- Avoid circular dependencies
+- Keep internal packages private
 
+### 6. Testing Guidelines
+
+**BDD Tests (Required):**
+- All user-facing behavior must have BDD scenarios
+- Test happy paths and error cases
+- Use realistic test data in `features/test-docs/`
+
+**Unit Tests (Encouraged):**
+- Test complex logic in isolation
+- Use table-driven tests for multiple cases
+- Mock external dependencies (filesystem, network)
+
+**Manual Testing:**
+```bash
+# Build and test locally
+make build
+./bin/flashdoc ./features/test-docs
+
+# Test with real documentation
+./bin/flashdoc ~/my-real-docs --title "My Docs"
+
+# Test export functionality
+./bin/flashdoc ./features/test-docs --export ./output
 ```
-internal/
-├── cli/           # CLI parsing and command setup
-├── workspace/     # Temp directory management
-├── scanner/       # Markdown file discovery
-├── processor/     # Frontmatter injection
-├── copier/        # File copying logic
-├── template/      # Template extraction
-├── config/        # Config generation
-├── pkgmgr/        # Package manager detection
-├── installer/     # Dependency installation
-├── server/        # Dev server management
-└── browser/       # Browser opening
-```
-
-## Testing Guidelines
-
-### Unit Tests
-- Test individual functions and methods
-- Mock external dependencies
-- Use table-driven tests where appropriate
-
-```go
-func TestGenerateTitle(t *testing.T) {
-    tests := []struct {
-        name     string
-        filename string
-        want     string
-    }{
-        {"simple", "guide.md", "Guide"},
-        {"hyphenated", "getting-started.md", "Getting Started"},
-        {"numbered", "01-intro.md", "Intro"},
-    }
-
-    for _, tt := range tests {
-        t.Run(tt.name, func(t *testing.T) {
-            got := GenerateTitle(tt.filename)
-            if got != tt.want {
-                t.Errorf("got %q, want %q", got, tt.want)
-            }
-        })
-    }
-}
-```
-
-### Integration Tests (BDD)
-- Use godog to implement feature scenarios
-- Test component interactions
-- Verify end-to-end behavior
-
-### Manual Testing
-- Build and test the actual binary
-- Verify cross-platform behavior
-- Test with real markdown directories
 
 ## Pull Request Process
 
-1. **Fork and Branch**: Create a feature branch from `main`
-2. **Implement**: Write tests first, then implementation
-3. **Test**: Ensure all tests pass (`make test`)
-4. **Format**: Run `make fmt` and `make lint`
-5. **Commit**: Use clear, descriptive commit messages
-6. **PR**: Submit PR with reference to feature file(s)
+### Before Submitting
+
+- [ ] All tests pass: `go test -v ./features/...`
+- [ ] Code is formatted: `go fmt ./...`
+- [ ] Linting passes: `golangci-lint run ./...` (if installed)
+- [ ] Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
+- [ ] Documentation updated (if needed)
 
 ### Commit Message Format
 
 ```
-type(scope): subject
+<type>(<scope>): <subject>
 
-body (optional)
+<body>
 
-Refs: #issue
+<footer>
 ```
 
-Examples:
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation only
+- `refactor`: Code change that neither fixes a bug nor adds a feature
+- `test`: Adding or updating tests
+- `chore`: Changes to build process or auxiliary tools
+- `ci`: Changes to CI/CD configuration
+
+**Examples:**
 ```
-feat(cli): implement directory path validation
+feat(export): add --export flag for static site generation
 
-Implements scenarios from cli-parsing.feature:
-- Valid directory path provided
-- Directory does not exist
-- Path is a file not a directory
+Implements static site export functionality that runs astro build
+and copies the output to a specified directory.
 
-Refs: #1
+Closes #42
 
-test(workspace): add temp directory cleanup tests
+fix(frontmatter): handle empty YAML blocks correctly
 
-Covers cleanup.feature scenarios for graceful shutdown
+Previously empty frontmatter blocks caused parser errors.
+Now they're treated as empty documents.
 
-docs(readme): update installation instructions
+docs(readme): add installation instructions for Homebrew
+
+test(scanner): add test for nested directory structures
 ```
 
-## Questions?
+### PR Description Template
 
-- **Feature Questions**: Review the feature files and FEATURE_VALIDATION.md
-- **Implementation Questions**: Open an issue for discussion
-- **Bug Reports**: Use issue template (to be created)
+```markdown
+## Description
+Brief description of changes
 
-## License
+## Type of Change
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Breaking change
+- [ ] Documentation update
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+## Testing
+- [ ] All existing tests pass
+- [ ] New tests added (if applicable)
+- [ ] Manually tested
+
+## Checklist
+- [ ] Code follows project style
+- [ ] Self-reviewed the code
+- [ ] Commented complex logic
+- [ ] Updated documentation
+- [ ] No new warnings
+
+## Related Issues
+Closes #issue_number
+```
+
+## Release Process
+
+Releases are automated via GoReleaser and GitHub Actions:
+
+1. **Version Tag**: Create and push a version tag
+   ```bash
+   git tag -a v0.3.0 -m "Release v0.3.0"
+   git push origin v0.3.0
+   ```
+
+2. **Automated Build**: GitHub Actions automatically:
+   - Runs all tests
+   - Builds binaries for multiple platforms
+   - Creates GitHub Release
+   - Updates Homebrew tap
+   - Generates changelog
+
+3. **Distribution**: Users can install via:
+   - `go install github.com/nicovandenhove/flashdoc/cmd/flashdoc@latest`
+   - `brew install nicovandenhove/tap/flashdoc`
+   - Download binaries from GitHub Releases
+
+**Note**: Only maintainers can create releases.
+
+## License and Compliance
+
+### Project License
+
+flashdoc is licensed under the [Beerware License](LICENSE). By contributing, you agree that your contributions will be licensed under the same license.
+
+**What this means:**
+- Anyone can use, modify, and distribute this software
+- The only requirement: retain the license notice
+- Optional: Buy the author a beer if you meet and like it! 🍺
+
+### Third-Party Dependencies
+
+When adding new dependencies:
+
+1. **Check the license**: Must be permissive (MIT, Apache 2.0, BSD)
+2. **Update THIRD-PARTY-LICENSES.md**: Add the dependency with license info
+3. **Update .goreleaser.yaml**: Include license file in releases (if needed)
+
+See [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md) for current dependencies.
+
+## Getting Help
+
+- **BDD/Testing Questions**: See [CLAUDE.md](CLAUDE.md) sections on BDD patterns
+- **Architecture Questions**: Review package documentation in `internal/`
+- **Feature Requests**: Open an issue with the `enhancement` label
+- **Bug Reports**: Open an issue with reproduction steps
+- **General Discussion**: Use GitHub Discussions (if enabled)
+
+## Community Guidelines
+
+- Be respectful and inclusive
+- Provide constructive feedback
+- Help others learn and grow
+- Focus on the behavior, not the person
+- Celebrate contributions of all sizes
+
+## Recognition
+
+Contributors will be recognized in:
+- GitHub contributor list
+- Release notes (for significant contributions)
+- README.md (for major features)
 
 ---
 
-**Happy Coding!** 🚀
+**Thank you for contributing to flashdoc!** 🚀
 
-Remember: Features first, tests second, implementation third. This approach ensures we build exactly what's specified and nothing more.
+Every contribution—whether it's code, documentation, bug reports, or feedback—helps make flashdoc better for everyone.
+
+**Questions?** Open an issue or reach out to [@heidene](https://github.com/heidene).
+
+---
+
+*Last updated: 2026-02-15*

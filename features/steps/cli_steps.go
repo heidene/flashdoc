@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/stardoc/internal/processor"
-	"github.com/nicovandenhove/stardoc/internal/scanner"
-	"github.com/nicovandenhove/stardoc/internal/template"
+	"github.com/nicovandenhove/flashdoc/internal/processor"
+	"github.com/nicovandenhove/flashdoc/internal/scanner"
+	"github.com/nicovandenhove/flashdoc/internal/template"
 )
 
 // RegisterCLISteps registers all CLI-related step definitions

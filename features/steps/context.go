@@ -6,10 +6,10 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/nicovandenhove/stardoc/internal/pkgmanager"
-	"github.com/nicovandenhove/stardoc/internal/scanner"
-	"github.com/nicovandenhove/stardoc/internal/server"
-	"github.com/nicovandenhove/stardoc/internal/workspace"
+	"github.com/nicovandenhove/flashdoc/internal/pkgmanager"
+	"github.com/nicovandenhove/flashdoc/internal/scanner"
+	"github.com/nicovandenhove/flashdoc/internal/server"
+	"github.com/nicovandenhove/flashdoc/internal/workspace"
 )
 
 // TestContext holds shared state between step definitions

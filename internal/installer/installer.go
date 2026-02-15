@@ -6,8 +6,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/nicovandenhove/stardoc/internal/pkgmanager"
-	"github.com/nicovandenhove/stardoc/internal/progress"
+	"github.com/nicovandenhove/flashdoc/internal/pkgmanager"
+	"github.com/nicovandenhove/flashdoc/internal/progress"
 )
 
 // Installer handles dependency installation

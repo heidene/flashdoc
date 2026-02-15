@@ -1,8 +1,8 @@
-# Stardoc
+# flashdoc
 
 > Ephemeral Starlight documentation sites from any folder of markdown files.
 
-Stardoc is a CLI tool that transforms any directory of markdown files into a beautiful, searchable documentation site powered by [Astro Starlight](https://starlight.astro.build/). Think "man pages++" - instant documentation without the hassle.
+flashdoc is a CLI tool that transforms any directory of markdown files into a beautiful, searchable documentation site powered by [Astro Starlight](https://starlight.astro.build/). Think "man pages++" - instant documentation without the hassle.
 
 ## Features
 
@@ -17,25 +17,25 @@ Stardoc is a CLI tool that transforms any directory of markdown files into a bea
 
 ```bash
 # View documentation from a folder
-stardoc ./docs
+flashdoc ./docs
 
 # With custom title
-stardoc ./api-docs --title "API Reference"
+flashdoc ./api-docs --title "API Reference"
 
 # Custom port
-stardoc ./guides --port 8080
+flashdoc ./guides --port 8080
 
 # Don't open browser automatically
-stardoc ./docs --no-open
+flashdoc ./docs --no-open
 ```
 
 ## Installation
 
 ```bash
-go install github.com/heidene/stardoc@latest
+go install github.com/heidene/flashdoc@latest
 ```
 
-Or download a binary from the [releases page](https://github.com/heidene/stardoc/releases).
+Or download a binary from the [releases page](https://github.com/heidene/flashdoc/releases).
 
 ## How It Works
 
@@ -51,14 +51,14 @@ Or download a binary from the [releases page](https://github.com/heidene/stardoc
 The directory structure is organized by BDD phases:
 
 ```
-stardoc/
+flashdoc/
 ├── features/                    # Gherkin feature files (BDD specs)
 │   ├── phase1-foundation/      # CLI, workspace, signals, cleanup
 │   ├── phase2-markdown/        # Scanning, frontmatter, copying
 │   ├── phase3-starlight/       # Template, config, dependencies
 │   └── phase4-server/          # Dev server, browser, terminal UX
 ├── cmd/
-│   └── stardoc/
+│   └── flashdoc/
 │       └── main.go             # CLI entry point
 ├── internal/
 │   ├── cli/                    # Command-line parsing
@@ -114,41 +114,41 @@ make install
 
 ```bash
 # View markdown docs from current directory
-stardoc .
+flashdoc .
 
 # View docs from specific folder
-stardoc ./documentation
+flashdoc ./documentation
 
 # View nested structure
-stardoc ~/projects/api-docs
+flashdoc ~/projects/api-docs
 ```
 
 ### With Flags
 
 ```bash
 # Custom title
-stardoc ./docs --title "My Project Documentation"
+flashdoc ./docs --title "My Project Documentation"
 
 # Custom port
-stardoc ./docs --port 3000
+flashdoc ./docs --port 3000
 
 # Quiet mode (minimal output)
-stardoc ./docs --quiet
+flashdoc ./docs --quiet
 
 # Verbose mode (debug info)
-stardoc ./docs --verbose
+flashdoc ./docs --verbose
 
 # Don't auto-open browser
-stardoc ./docs --no-open
+flashdoc ./docs --no-open
 
 # Force specific package manager
-stardoc ./docs --package-manager pnpm
+flashdoc ./docs --package-manager pnpm
 ```
 
 ## CLI Reference
 
 ```
-Usage: stardoc <directory> [flags]
+Usage: flashdoc <directory> [flags]
 
 Flags:
   --title string             Custom site title (default: directory name)

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/stardoc/internal/template"
+	"github.com/nicovandenhove/flashdoc/internal/template"
 )
 
 // RegisterTemplateSteps registers all template-related step definitions

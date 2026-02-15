@@ -5,8 +5,8 @@ import (
 	"os"
 	"sync"
 
-	"github.com/nicovandenhove/stardoc/internal/staticserver"
-	"github.com/nicovandenhove/stardoc/internal/workspace"
+	"github.com/nicovandenhove/flashdoc/internal/staticserver"
+	"github.com/nicovandenhove/flashdoc/internal/workspace"
 )
 
 // Manager handles cleanup of resources when stardoc exits

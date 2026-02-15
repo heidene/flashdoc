@@ -1,4 +1,4 @@
-module github.com/nicovandenhove/stardoc
+module github.com/nicovandenhove/flashdoc
 
 go 1.25.5
 

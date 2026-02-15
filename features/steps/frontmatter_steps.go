@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/stardoc/internal/frontmatter"
+	"github.com/nicovandenhove/flashdoc/internal/frontmatter"
 	"gopkg.in/yaml.v3"
 )
 

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/stardoc/internal/pkgmanager"
+	"github.com/nicovandenhove/flashdoc/internal/pkgmanager"
 )
 
 // RegisterPkgManagerSteps registers all package manager-related step definitions

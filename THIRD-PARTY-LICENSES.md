@@ -1,10 +1,10 @@
 # Third-Party Licenses
 
-This document lists the open-source dependencies used by Stardoc and their respective licenses.
+This document lists the open-source dependencies used by flashdoc and their respective licenses.
 
-## Stardoc License
+## flashdoc License
 
-Stardoc itself is licensed under the [Beerware License](LICENSE). However, it depends on the following third-party software, each with its own license terms.
+flashdoc itself is licensed under the [Beerware License](LICENSE). However, it depends on the following third-party software, each with its own license terms.
 
 ---
 
@@ -67,7 +67,7 @@ Stardoc itself is licensed under the [Beerware License](LICENSE). However, it de
 
 ## Node.js Dependencies
 
-The following npm packages are installed as part of the Starlight documentation site that Stardoc generates:
+The following npm packages are installed as part of the Starlight documentation site that flashdoc generates:
 
 ### Runtime Dependencies
 
@@ -116,7 +116,7 @@ The following npm packages are installed as part of the Starlight documentation 
 
 ## License Compatibility
 
-All third-party dependencies use permissive open-source licenses (MIT, Apache 2.0, BSD 3-Clause) that are compatible with the Beerware License used by Stardoc.
+All third-party dependencies use permissive open-source licenses (MIT, Apache 2.0, BSD 3-Clause) that are compatible with the Beerware License used by flashdoc.
 
 ### License Summary
 
@@ -136,7 +136,7 @@ For the complete license texts of each dependency, please refer to the License U
 
 ## Compliance
 
-By using Stardoc, you agree to comply with the license terms of all included third-party software. The copyright and license notices of these dependencies are preserved as required by their respective licenses.
+By using flashdoc, you agree to comply with the license terms of all included third-party software. The copyright and license notices of these dependencies are preserved as required by their respective licenses.
 
 ---
 
@@ -145,7 +145,7 @@ By using Stardoc, you agree to comply with the license terms of all included thi
 - **Go dependencies**: Run `go list -m all` in the project directory
 - **Node.js dependencies**: Check `node_modules` after running `npm install` in a generated site
 
-For any questions about licensing, please open an issue at: https://github.com/nicovandenhove/stardoc/issues
+For any questions about licensing, please open an issue at: https://github.com/nicovandenhove/flashdoc/issues
 
 ---
 

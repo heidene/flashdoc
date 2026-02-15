@@ -1,4 +1,4 @@
-# GoReleaser configuration for stardoc
+# GoReleaser configuration for flashdoc
 # See https://goreleaser.com for documentation
 
 version: 2
@@ -12,9 +12,9 @@ before:
     - go test -v ./features/...
 
 builds:
-  - id: stardoc
-    main: ./cmd/stardoc
-    binary: stardoc
+  - id: flashdoc
+    main: ./cmd/flashdoc
+    binary: flashdoc
 
     # Build for multiple platforms
     goos:
@@ -33,16 +33,16 @@ builds:
     # Inject version info via ldflags
     ldflags:
       - -s -w
-      - -X 'github.com/nicovandenhove/stardoc/internal/cli.Version={{.Version}}'
-      - -X 'github.com/nicovandenhove/stardoc/internal/cli.Commit={{.Commit}}'
-      - -X 'github.com/nicovandenhove/stardoc/internal/cli.Date={{.Date}}'
+      - -X 'github.com/nicovandenhove/flashdoc/internal/cli.Version={{.Version}}'
+      - -X 'github.com/nicovandenhove/flashdoc/internal/cli.Commit={{.Commit}}'
+      - -X 'github.com/nicovandenhove/flashdoc/internal/cli.Date={{.Date}}'
 
     # Remove debug info and trim paths
     flags:
       - -trimpath
 
 archives:
-  - id: stardoc
+  - id: flashdoc
     format: tar.gz
 
     # Use zip for Windows
@@ -93,7 +93,7 @@ changelog:
 
 # Homebrew formula configuration
 brews:
-  - name: stardoc
+  - name: flashdoc
     repository:
       owner: nicovandenhove
       name: homebrew-tap
@@ -104,7 +104,7 @@ brews:
 
     # Formula metadata
     folder: Formula
-    homepage: "https://github.com/nicovandenhove/stardoc"
+    homepage: "https://github.com/nicovandenhove/flashdoc"
     description: "Generate and serve Starlight documentation sites from markdown files"
     license: "Beerware"
 
@@ -115,16 +115,16 @@ brews:
 
     # Installation instructions
     install: |
-      bin.install "stardoc"
+      bin.install "flashdoc"
 
     # Test
     test: |
-      system "#{bin}/stardoc", "--version"
+      system "#{bin}/flashdoc", "--version"
 
 release:
   github:
     owner: nicovandenhove
-    name: stardoc
+    name: flashdoc
 
   # Disable draft releases
   draft: false
@@ -139,4 +139,4 @@ release:
   mode: append
 
 # Metadata
-project_name: stardoc
+project_name: flashdoc

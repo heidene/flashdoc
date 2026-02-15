@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/stardoc/internal/scanner"
+	"github.com/nicovandenhove/flashdoc/internal/scanner"
 )
 
 // RegisterScannerSteps registers all scanner-related step definitions

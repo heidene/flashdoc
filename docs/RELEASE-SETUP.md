@@ -8,7 +8,7 @@ All binary distribution infrastructure has been implemented:
    - `internal/cli/config.go` - Variables for Version, Commit, Date
    - `internal/cli/root.go` - Uses FullVersion() for rich output
    - `Makefile` - Adds ldflags to build and install targets
-   - Verified: `./bin/stardoc --version` shows full version info
+   - Verified: `./bin/flashdoc --version` shows full version info
 
 2. **GoReleaser configuration** ✅
    - `.goreleaser.yaml` - Complete release automation
@@ -34,7 +34,7 @@ All binary distribution infrastructure has been implemented:
 # Create a new GitHub repository
 # Name: homebrew-tap
 # Owner: nicovandenhove
-# Description: Homebrew formulae for stardoc
+# Description: Homebrew formulae for flashdoc
 # Public: Yes
 
 # Initialize it with a Formula directory
@@ -51,7 +51,7 @@ git push -u origin main
 1. Go to: https://github.com/settings/tokens?type=beta
 2. Click "Generate new token" (fine-grained)
 3. Configure:
-   - **Token name**: `homebrew-tap-stardoc`
+   - **Token name**: `homebrew-tap-flashdoc`
    - **Expiration**: 1 year (or custom)
    - **Repository access**: Only select repositories → `homebrew-tap`
    - **Permissions**:
@@ -62,7 +62,7 @@ git push -u origin main
 
 ### 3. Add GitHub Secret
 
-1. Go to: https://github.com/nicovandenhove/stardoc/settings/secrets/actions
+1. Go to: https://github.com/nicovandenhove/flashdoc/settings/secrets/actions
 2. Click "New repository secret"
 3. Name: `HOMEBREW_TAP_TOKEN`
 4. Value: Paste the token from step 2
@@ -99,13 +99,13 @@ After the first release (v0.2.0):
 
 ```bash
 # Option 1: go install
-go install github.com/nicovandenhove/stardoc/cmd/stardoc@latest
+go install github.com/nicovandenhove/flashdoc/cmd/flashdoc@latest
 
 # Option 2: Homebrew
-brew install nicovandenhove/tap/stardoc
+brew install nicovandenhove/tap/flashdoc
 
 # Option 3: Download binary
-# Visit: https://github.com/nicovandenhove/stardoc/releases
+# Visit: https://github.com/nicovandenhove/flashdoc/releases
 # Download for your platform and add to PATH
 ```
 
@@ -133,10 +133,10 @@ ls -lh dist/
 Before pushing the first release tag:
 
 - [ ] Homebrew tap repository created
-- [ ] `HOMEBREW_TAP_TOKEN` secret added to stardoc repo
+- [ ] `HOMEBREW_TAP_TOKEN` secret added to flashdoc repo
 - [ ] `goreleaser check` passes
 - [ ] All BDD tests pass: `go test -v ./features/...`
-- [ ] Local build works: `make build && ./bin/stardoc --version`
+- [ ] Local build works: `make build && ./bin/flashdoc --version`
 - [ ] Snapshot release works: `goreleaser release --snapshot --clean`
 
 ## 📚 References

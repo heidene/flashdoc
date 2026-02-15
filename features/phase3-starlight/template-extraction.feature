@@ -24,7 +24,7 @@ Feature: Template Extraction
   Scenario: Template package.json has correct structure
     When the template is extracted
     And I read the "package.json" file
-    Then it should have a "name" field set to "stardoc-site"
+    Then it should have a "name" field set to "flashdoc-site"
     And it should have a "type" field set to "module"
     And it should have a "scripts" section with "dev" and "build" scripts
 

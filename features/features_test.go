@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/stardoc/features/steps"
+	"github.com/nicovandenhove/flashdoc/features/steps"
 )
 
 func InitializeScenario(sc *godog.ScenarioContext) {
