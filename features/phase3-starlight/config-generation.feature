@@ -61,15 +61,8 @@ Feature: Config Generation
 
   Scenario: Generate config with sidebar autogeneration
     When the astro.config.mjs is generated
-    Then it should include:
-      """
-      sidebar: [
-        {
-          label: 'Documentation',
-          autogenerate: { directory: '/' },
-        },
-      ]
-      """
+    Then it should not include explicit sidebar configuration
+    And the sidebar should use Starlight's default autogeneration
     And the sidebar should automatically reflect the file structure
 
   Scenario Outline: Generate config without social links

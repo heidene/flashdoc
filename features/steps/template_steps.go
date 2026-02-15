@@ -46,6 +46,8 @@ func RegisterTemplateSteps(sc *godog.ScenarioContext, ctx *TestContext) {
 	sc.Step(`^users' markdown files will populate this directory$`, ctx.usersMarkdownFilesWillPopulateDirectory)
 	sc.Step(`^it should extend "([^"]*)"$`, ctx.shouldExtendConfig)
 	sc.Step(`^it should include necessary path mappings$`, ctx.shouldIncludePathMappings)
+	sc.Step(`^it should include "([^"]*)" in the includes$`, ctx.shouldIncludeInIncludes)
+	sc.Step(`^it should exclude "([^"]*)" directory$`, ctx.shouldExcludeDirectory)
 	sc.Step(`^it should use "([^"]*)" directive$`, ctx.shouldUseDirective)
 	sc.Step(`^the embedded files should be from "([^"]*)"$`, ctx.embeddedFilesShouldBeFrom)
 	sc.Step(`^the embed should include all necessary template files$`, ctx.embedShouldIncludeAllNecessaryFiles)
@@ -466,6 +468,54 @@ func (ctx *TestContext) shouldIncludePathMappings() error {
 	// Check that tsconfig includes path mappings (if any)
 	// This is optional depending on implementation
 	return nil
+}
+
+func (ctx *TestContext) shouldIncludeInIncludes(pattern string) error {
+	if ctx.configContent == "" {
+		return fmt.Errorf("config content not loaded")
+	}
+
+	var tsconfig map[string]interface{}
+	if err := json.Unmarshal([]byte(ctx.configContent), &tsconfig); err != nil {
+		return fmt.Errorf("failed to parse tsconfig.json: %w", err)
+	}
+
+	includes, ok := tsconfig["include"].([]interface{})
+	if !ok {
+		return fmt.Errorf("includes field not found or not an array")
+	}
+
+	for _, inc := range includes {
+		if str, ok := inc.(string); ok && str == pattern {
+			return nil
+		}
+	}
+
+	return fmt.Errorf("include %q not found in includes array", pattern)
+}
+
+func (ctx *TestContext) shouldExcludeDirectory(dirName string) error {
+	if ctx.configContent == "" {
+		return fmt.Errorf("config content not loaded")
+	}
+
+	var tsconfig map[string]interface{}
+	if err := json.Unmarshal([]byte(ctx.configContent), &tsconfig); err != nil {
+		return fmt.Errorf("failed to parse tsconfig.json: %w", err)
+	}
+
+	excludes, ok := tsconfig["exclude"].([]interface{})
+	if !ok {
+		return fmt.Errorf("exclude field not found or not an array")
+	}
+
+	for _, exc := range excludes {
+		if str, ok := exc.(string); ok && str == dirName {
+			return nil
+		}
+	}
+
+	return fmt.Errorf("exclude %q not found in exclude array", dirName)
 }
 
 func (ctx *TestContext) shouldUseDirective(directive string) error {

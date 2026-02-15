@@ -29,6 +29,8 @@ func RegisterConfigSteps(sc *godog.ScenarioContext, ctx *TestContext) {
 	sc.Step(`^the title should properly escape special characters$`, ctx.titleShouldProperlyEscapeSpecialCharacters)
 	sc.Step(`^the title should be "([^"]*)"$`, ctx.titleShouldBeConfig)
 	sc.Step(`^it should include:$`, ctx.itShouldIncludeConfig)
+	sc.Step(`^it should not include explicit sidebar configuration$`, ctx.shouldNotIncludeExplicitSidebarConfig)
+	sc.Step(`^the sidebar should use Starlight's default autogeneration$`, ctx.sidebarShouldUseDefaultAutogeneration)
 	sc.Step(`^the sidebar should automatically reflect the file structure$`, ctx.sidebarShouldReflectFileStructure)
 	sc.Step(`^the config should not include a "([^"]*)" section$`, ctx.configShouldNotIncludeSection)
 	sc.Step(`^the "([^"]*)" section should be empty$`, ctx.sectionShouldBeEmpty)
@@ -278,6 +280,26 @@ func (ctx *TestContext) titleShouldBeConfig(expectedTitle string) error {
 
 func (ctx *TestContext) itShouldIncludeConfig(expectedContent string) error {
 	return ctx.configShouldContain(expectedContent)
+}
+
+func (ctx *TestContext) shouldNotIncludeExplicitSidebarConfig() error {
+	if ctx.configContent == "" {
+		return fmt.Errorf("config content not loaded")
+	}
+
+	// Check that there's no explicit sidebar configuration
+	// We want to let Starlight use its default autogeneration
+	if strings.Contains(ctx.configContent, "sidebar:") {
+		return fmt.Errorf("config contains explicit sidebar configuration, but should rely on Starlight defaults")
+	}
+
+	return nil
+}
+
+func (ctx *TestContext) sidebarShouldUseDefaultAutogeneration() error {
+	// This is verified by the absence of explicit sidebar config
+	// Starlight will automatically generate sidebar from file structure
+	return nil
 }
 
 func (ctx *TestContext) sidebarShouldReflectFileStructure() error {

@@ -17,6 +17,7 @@ Feature: Temporary Workspace Management
   Scenario: Temp directory contains Starlight structure
     When I run "stardoc ./test-docs"
     Then the temp directory should contain a "src/content/docs" subdirectory
+    And the temp directory should contain a "src/content.config.ts" file
     And the temp directory should contain a "public" subdirectory
     And the temp directory should contain a "package.json" file
     And the temp directory should contain an "astro.config.mjs" file

@@ -11,6 +11,7 @@ import (
 func RegisterOutputSteps(sc *godog.ScenarioContext, ctx *TestContext) {
 	sc.Step(`^stardoc produces output$`, ctx.stardocProducesOutput)
 	sc.Step(`^the output should follow this sequence:$`, ctx.outputShouldFollowSequence)
+	sc.Step(`^the stderr should contain success indicators:$`, ctx.stderrShouldContainSuccessIndicators)
 	sc.Step(`^colors should be used for emphasis$`, ctx.colorsShouldBeUsed)
 	sc.Step(`^✓ symbols should indicate success$`, ctx.checkmarksShouldIndicateSuccess)
 	sc.Step(`^✗ symbols should indicate errors$`, ctx.xSymbolsShouldIndicateErrors)
@@ -56,6 +57,24 @@ func (ctx *TestContext) outputShouldFollowSequence(expectedSequence string) erro
 			}
 		} else if !strings.Contains(output, line) {
 			return fmt.Errorf("expected output sequence not found: %q", line)
+		}
+	}
+
+	return nil
+}
+
+func (ctx *TestContext) stderrShouldContainSuccessIndicators(expectedIndicators string) error {
+	stderr := ctx.errorOutput.String()
+	lines := strings.Split(strings.TrimSpace(expectedIndicators), "\n")
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+
+		if !strings.Contains(stderr, line) {
+			return fmt.Errorf("expected stderr to contain: %q", line)
 		}
 	}
 

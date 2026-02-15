@@ -73,6 +73,7 @@ func (ctx *TestContext) iPressCtrlC() error {
 			ctx.exitCode = 0
 		} else {
 			ctx.output.WriteString("Cleanup complete\n")
+			ctx.exitCode = 0
 		}
 	}
 

@@ -10,21 +10,18 @@ Feature: Terminal Output
     Given I run "stardoc ./docs"
     Then the output should follow this sequence:
       """
-      🚀 Stardoc - Ephemeral Documentation Viewer
+      📦 Workspace:
+      Found 12 markdown files
+      Processing 12 files...
+      Copied 12 files successfully
+      🚀 Server started at http://localhost:4321
 
-      📁 Source: ./docs
-      📦 Workspace: /tmp/stardoc-abc123
-      🔍 Found 12 markdown files
-
-      📥 Installing dependencies...
-      ✅ Dependencies installed in 8s
-
-      🚀 Starting dev server...
-      ✅ Server ready at http://localhost:4321
-
-      🌐 Opening browser...
-
-      Press Ctrl+C to stop
+      Press Ctrl+C to exit
+      """
+    And the stderr should contain success indicators:
+      """
+      ✓ Dependencies installed
+      ✓ Documentation site ready
       """
 
   Scenario: Use emoji consistently

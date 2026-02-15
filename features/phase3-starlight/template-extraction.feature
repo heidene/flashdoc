@@ -78,8 +78,9 @@ Feature: Template Extraction
   Scenario: Template tsconfig.json extends Starlight defaults
     When the template is extracted
     And I read the "tsconfig.json" file
-    Then it should extend "@astrojs/starlight/tsconfig.json"
-    And it should include necessary path mappings
+    Then it should extend "astro/tsconfigs/strict"
+    And it should include ".astro/types.d.ts" in the includes
+    And it should exclude "dist" directory
 
   Scenario: Template is embedded using go:embed
     Given the stardoc source code
