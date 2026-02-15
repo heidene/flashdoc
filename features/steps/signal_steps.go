@@ -80,7 +80,7 @@ func (ctx *TestContext) iPressCtrlC() error {
 	// Terminate any test child processes
 	for _, pid := range ctx.childPIDs {
 		if process, err := os.FindProcess(pid); err == nil {
-			process.Kill()
+			_ = process.Kill()
 		}
 	}
 	ctx.childPIDs = nil
@@ -135,7 +135,7 @@ func (ctx *TestContext) iSendSIGTERM() error {
 	// Terminate any test child processes
 	for _, pid := range ctx.childPIDs {
 		if process, err := os.FindProcess(pid); err == nil {
-			process.Kill()
+			_ = process.Kill()
 		}
 	}
 	ctx.childPIDs = nil

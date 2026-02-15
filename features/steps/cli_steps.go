@@ -213,7 +213,7 @@ func (ctx *TestContext) iRunStardoc(args string) error {
 				// Create some test markdown files for output format tests
 				for i := 1; i <= 12; i++ {
 					filename := filepath.Join(tempDir, fmt.Sprintf("doc%d.md", i))
-					os.WriteFile(filename, []byte(fmt.Sprintf("# Document %d\n\nTest content", i)), 0644)
+					_ = os.WriteFile(filename, []byte(fmt.Sprintf("# Document %d\n\nTest content", i)), 0644)
 				}
 			}
 		}

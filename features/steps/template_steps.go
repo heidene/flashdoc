@@ -369,7 +369,7 @@ func (ctx *TestContext) filesShouldBeOverwrittenWithSameContent() error {
 
 func (ctx *TestContext) noDuplicateFilesShouldBeCreated() error {
 	// Check that there are no duplicate files with suffixes like .1, .bak, etc.
-	filepath.Walk(ctx.tempDir, func(path string, info os.FileInfo, err error) error {
+	_ = filepath.Walk(ctx.tempDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return nil
 		}

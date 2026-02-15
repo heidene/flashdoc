@@ -585,7 +585,7 @@ func (ctx *TestContext) filesShouldBeIgnoredInCopy(file1, file2 string) error {
 func (ctx *TestContext) bothFilesShouldBeCopied(filename string) error {
 	// Find all files with this name in different directories
 	count := 0
-	filepath.Walk(ctx.targetDirectory, func(path string, info os.FileInfo, err error) error {
+	_ = filepath.Walk(ctx.targetDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return nil
 		}

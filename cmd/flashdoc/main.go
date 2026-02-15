@@ -72,7 +72,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
-		defer sharedMgr.ReleaseLock()
+		defer func() { _ = sharedMgr.ReleaseLock() }()
 
 		// Extract template to shared directory
 		if err := template.ExtractToShared(sharedMgr.GetSharedDir()); err != nil {
@@ -114,13 +114,13 @@ func main() {
 	// Setup workspace structure (creates symlinks)
 	if err := ws.Setup(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: failed to setup workspace: %v\n", err)
-		ws.Cleanup()
+		_ = ws.Cleanup()
 		os.Exit(1)
 	}
 
 	// Setup cleanup manager
 	cleanupMgr := cleanup.New(ws)
-	defer cleanupMgr.Cleanup()
+	defer func() { _ = cleanupMgr.Cleanup() }()
 
 	// Setup signal handling
 	sigHandler := signal.New(cleanupMgr.Cleanup)
