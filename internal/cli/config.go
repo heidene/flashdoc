@@ -17,9 +17,9 @@ type Config struct {
 
 // Version variables - injected at build time via ldflags
 var (
-	Version = "dev"       // Semantic version (e.g., "0.2.0")
-	Commit  = "unknown"   // Git commit hash
-	Date    = "unknown"   // Build date
+	Version = "dev"     // Semantic version (e.g., "0.2.0")
+	Commit  = "unknown" // Git commit hash
+	Date    = "unknown" // Build date
 )
 
 // FullVersion returns a detailed version string including commit and build date

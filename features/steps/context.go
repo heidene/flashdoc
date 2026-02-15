@@ -35,9 +35,9 @@ type TestContext struct {
 	childPIDs  []int
 
 	// Flags
-	cliAvailable          bool
-	interrupted           bool
-	tempDirNotWritable    bool
+	cliAvailable           bool
+	interrupted            bool
+	tempDirNotWritable     bool
 	expectDirectoryMissing bool
 
 	// Test helpers

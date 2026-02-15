@@ -169,10 +169,10 @@ export default defineConfig({
 		"tsconfig.json": `{
   "extends": "astro/tsconfigs/strict"
 }`,
-		"src/":             "",
-		"src/content/":     "",
+		"src/":              "",
+		"src/content/":      "",
 		"src/content/docs/": "",
-		"public/":          "",
+		"public/":           "",
 	}
 
 	return ctx.CreateDirectoryStructure(baseDir, structure)
@@ -180,10 +180,11 @@ export default defineConfig({
 
 // ParseDocStructure parses a Gherkin doc string into a directory structure
 // Format:
-//   docs/
-//     README.md
-//     guide/
-//       intro.md
+//
+//	docs/
+//	  README.md
+//	  guide/
+//	    intro.md
 func ParseDocStructure(docString string) map[string]string {
 	structure := make(map[string]string)
 	lines := strings.Split(docString, "\n")

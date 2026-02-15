@@ -54,11 +54,11 @@ func customArgsValidator(cmd *cobra.Command, args []string) error {
 // NewRootCommand creates the root cobra command
 func NewRootCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:     "stardoc <directory>",
-		Short:   "Generate and serve a Starlight documentation site from markdown files",
-		Version: FullVersion(),
-		Args:    customArgsValidator,
-		RunE:    runStardoc,
+		Use:          "stardoc <directory>",
+		Short:        "Generate and serve a Starlight documentation site from markdown files",
+		Version:      FullVersion(),
+		Args:         customArgsValidator,
+		RunE:         runStardoc,
 		SilenceUsage: true,
 	}
 
