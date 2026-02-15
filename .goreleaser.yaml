@@ -33,9 +33,9 @@ builds:
     # Inject version info via ldflags
     ldflags:
       - -s -w
-      - -X 'github.com/nicovandenhove/flashdoc/internal/cli.Version={{.Version}}'
-      - -X 'github.com/nicovandenhove/flashdoc/internal/cli.Commit={{.Commit}}'
-      - -X 'github.com/nicovandenhove/flashdoc/internal/cli.Date={{.Date}}'
+      - -X 'github.com/heidene/flashdoc/internal/cli.Version={{.Version}}'
+      - -X 'github.com/heidene/flashdoc/internal/cli.Commit={{.Commit}}'
+      - -X 'github.com/heidene/flashdoc/internal/cli.Date={{.Date}}'
 
     # Remove debug info and trim paths
     flags:
@@ -123,7 +123,7 @@ changelog:
 
 release:
   github:
-    owner: nicovandenhove
+    owner: heidene
     name: flashdoc
 
   # Disable draft releases
