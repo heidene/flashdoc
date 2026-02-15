@@ -17,11 +17,11 @@ Feature: Static Site Export
     And the CLI should exit with code 0
 
   Scenario: Export to custom directory
-    When I run "stardoc ./test-docs --export ../my-docs"
+    When I run "stardoc ./test-docs --export ../docs"
     Then the CLI should build the static site
-    And the static files should be exported to "../my-docs"
+    And the static files should be exported to "../docs"
     And the export directory should contain "index.html"
-    And the CLI should display "✅ Exported to ../my-docs"
+    And the CLI should display "✅ Exported to ../docs"
     And the CLI should exit with code 0
 
   Scenario: Export to absolute path

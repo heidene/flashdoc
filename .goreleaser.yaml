@@ -1,0 +1,142 @@
+# GoReleaser configuration for stardoc
+# See https://goreleaser.com for documentation
+
+version: 2
+
+before:
+  hooks:
+    # Ensure dependencies are up to date
+    - go mod tidy
+    # Run tests before building
+    - go test -v ./...
+    - go test -v ./features/...
+
+builds:
+  - id: stardoc
+    main: ./cmd/stardoc
+    binary: stardoc
+
+    # Build for multiple platforms
+    goos:
+      - darwin
+      - linux
+      - windows
+
+    goarch:
+      - amd64
+      - arm64
+
+    # Disable CGO for static binaries
+    env:
+      - CGO_ENABLED=0
+
+    # Inject version info via ldflags
+    ldflags:
+      - -s -w
+      - -X 'github.com/nicovandenhove/stardoc/internal/cli.Version={{.Version}}'
+      - -X 'github.com/nicovandenhove/stardoc/internal/cli.Commit={{.Commit}}'
+      - -X 'github.com/nicovandenhove/stardoc/internal/cli.Date={{.Date}}'
+
+    # Remove debug info and trim paths
+    flags:
+      - -trimpath
+
+archives:
+  - id: stardoc
+    format: tar.gz
+
+    # Use zip for Windows
+    format_overrides:
+      - goos: windows
+        format: zip
+
+    # Archive name template
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+
+    # Files to include in archives
+    files:
+      - LICENSE
+      - README.md
+      - THIRD-PARTY-LICENSES.md
+
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  use: github
+
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^chore:'
+      - 'typo'
+
+  groups:
+    - title: Features
+      regexp: '^feat:'
+      order: 0
+    - title: Bug Fixes
+      regexp: '^fix:'
+      order: 1
+    - title: Others
+      order: 999
+
+# Homebrew formula configuration
+brews:
+  - name: stardoc
+    repository:
+      owner: nicovandenhove
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+
+    # Commit message for the formula update
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+
+    # Formula metadata
+    folder: Formula
+    homepage: "https://github.com/nicovandenhove/stardoc"
+    description: "Generate and serve Starlight documentation sites from markdown files"
+    license: "Beerware"
+
+    # Dependencies
+    dependencies:
+      - name: node
+        type: optional
+
+    # Installation instructions
+    install: |
+      bin.install "stardoc"
+
+    # Test
+    test: |
+      system "#{bin}/stardoc", "--version"
+
+release:
+  github:
+    owner: nicovandenhove
+    name: stardoc
+
+  # Disable draft releases
+  draft: false
+
+  # Don't mark as prerelease
+  prerelease: auto
+
+  # Release name
+  name_template: "{{.ProjectName}} {{.Version}}"
+
+  # Include changelog in release notes
+  mode: append
+
+# Metadata
+project_name: stardoc

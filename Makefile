@@ -1,5 +1,18 @@
 .PHONY: help build install test clean fmt lint features
 
+# Version info
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
+COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+# Ldflags for version injection
+LDFLAGS := -X 'github.com/nicovandenhove/stardoc/internal/cli.Version=$(VERSION)' \
+           -X 'github.com/nicovandenhove/stardoc/internal/cli.Commit=$(COMMIT)' \
+           -X 'github.com/nicovandenhove/stardoc/internal/cli.Date=$(DATE)'
+
+# Build flags
+BUILD_FLAGS := -trimpath -ldflags "$(LDFLAGS) -s -w"
+
 # Default target
 help:
 	@echo "Stardoc - Development Commands"
@@ -16,14 +29,14 @@ help:
 
 # Build the binary
 build:
-	@echo "Building stardoc..."
-	@go build -o bin/stardoc ./cmd/stardoc
+	@echo "Building stardoc $(VERSION)..."
+	@go build $(BUILD_FLAGS) -o bin/stardoc ./cmd/stardoc
 	@echo "✅ Binary created at bin/stardoc"
 
 # Install to GOPATH/bin
 install:
-	@echo "Installing stardoc..."
-	@go install ./cmd/stardoc
+	@echo "Installing stardoc $(VERSION)..."
+	@go install $(BUILD_FLAGS) ./cmd/stardoc
 	@echo "✅ Installed to $(shell go env GOPATH)/bin/stardoc"
 
 # Run all tests

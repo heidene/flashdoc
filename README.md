@@ -17,7 +17,7 @@ Stardoc is a CLI tool that transforms any directory of markdown files into a bea
 
 ```bash
 # View documentation from a folder
-stardoc ./my-docs
+stardoc ./docs
 
 # With custom title
 stardoc ./api-docs --title "API Reference"
@@ -32,10 +32,10 @@ stardoc ./docs --no-open
 ## Installation
 
 ```bash
-go install github.com/nicovandenhove/stardoc@latest
+go install github.com/heidene/stardoc@latest
 ```
 
-Or download a binary from the [releases page](https://github.com/nicovandenhove/stardoc/releases).
+Or download a binary from the [releases page](https://github.com/heidene/stardoc/releases).
 
 ## How It Works
 

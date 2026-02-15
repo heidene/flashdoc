@@ -9,11 +9,11 @@ Feature: Config Generation
     And the Starlight template has been extracted
 
   Scenario: Generate config with default title
-    Given I run "stardoc ./my-docs"
+    Given I run "stardoc ./docs"
     When the astro.config.mjs is generated
     Then the config should contain:
       """
-      title: 'My Docs'
+      title: 'Docs'
       """
     And the title should be derived from the directory name
 

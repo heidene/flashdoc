@@ -124,8 +124,8 @@ Each `.feature` file contains:
 Example:
 ```gherkin
 Scenario: Valid directory path provided
-  When I run "stardoc ./my-docs"
-  Then the CLI should parse the path "./my-docs"
+  When I run "stardoc ./docs"
+  Then the CLI should parse the path "./docs"
   And the CLI should validate that the path exists
   And the CLI should proceed with site generation
 ```

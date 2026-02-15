@@ -56,7 +56,7 @@ func NewRootCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:     "stardoc <directory>",
 		Short:   "Generate and serve a Starlight documentation site from markdown files",
-		Version: Version,
+		Version: FullVersion(),
 		Args:    customArgsValidator,
 		RunE:    runStardoc,
 		SilenceUsage: true,
