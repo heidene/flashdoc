@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/flashdoc/internal/workspace"
+	"github.com/heidene/flashdoc/internal/workspace"
 )
 
 // RegisterWorkspaceSteps registers all workspace-related step definitions

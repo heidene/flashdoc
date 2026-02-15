@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/flashdoc/internal/processor"
-	"github.com/nicovandenhove/flashdoc/internal/scanner"
+	"github.com/heidene/flashdoc/internal/processor"
+	"github.com/heidene/flashdoc/internal/scanner"
 )
 
 // RegisterProcessorSteps registers all processor-related step definitions

@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/nicovandenhove/flashdoc/internal/progress"
+	"github.com/heidene/flashdoc/internal/progress"
 )
 
 // Builder handles static site building with Astro

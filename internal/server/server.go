@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/nicovandenhove/flashdoc/internal/pkgmanager"
+	"github.com/heidene/flashdoc/internal/pkgmanager"
 )
 
 // Server manages the Astro dev server

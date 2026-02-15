@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	"github.com/nicovandenhove/flashdoc/internal/cleanup"
-	"github.com/nicovandenhove/flashdoc/internal/workspace"
+	"github.com/heidene/flashdoc/internal/cleanup"
+	"github.com/heidene/flashdoc/internal/workspace"
 )
 
 // RegisterCleanupSteps registers all cleanup-related step definitions

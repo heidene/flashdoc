@@ -6,8 +6,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/nicovandenhove/flashdoc/internal/pkgmanager"
-	"github.com/nicovandenhove/flashdoc/internal/progress"
+	"github.com/heidene/flashdoc/internal/pkgmanager"
+	"github.com/heidene/flashdoc/internal/progress"
 )
 
 // Installer handles dependency installation
